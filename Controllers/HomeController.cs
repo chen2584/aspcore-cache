@@ -55,7 +55,9 @@ namespace aspcore_testRedis.Controllers
         [OutputCache]
         public IActionResult Index()
         {
-            return View();
+            OutputCacheModel OutputCache = new OutputCacheModel() { Content = "Test Content" };
+
+            return View(OutputCache);
         }
 
         public IActionResult About()
@@ -81,7 +83,7 @@ namespace aspcore_testRedis.Controllers
             return View();
         }
 
-        [OutputCache(Duration=5)]
+        [OutputCache(Duration=20)]
         public ActionResult Chen()
         {
             ViewData["Message"] = "This is a book";

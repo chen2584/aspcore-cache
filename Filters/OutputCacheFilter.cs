@@ -48,7 +48,7 @@ public class OutputCacheAttribute : ActionFilterAttribute
             Console.WriteLine("Cache null");
             if (context.Result is ObjectResult objectResult)
             {
-                string value = context.HttpContext.Response.ContentType.Contains("application/json") ? JsonConvert.SerializeObject(objectResult.Value, jsonSettings) : objectResult.Value.ToString();
+                string value = context.HttpContext.Response.ContentType.StartsWith("application/json") ? JsonConvert.SerializeObject(objectResult.Value, jsonSettings) : objectResult.Value.ToString();
                 var outputCache = new OutputCacheModel() { Content = value, ContentType = context.HttpContext.Response.ContentType, StatusCode = context.HttpContext.Response.StatusCode };
                 cache.Set(cacheKey, outputCache, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromSeconds(Duration)));
             }

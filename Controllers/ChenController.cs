@@ -11,7 +11,7 @@ namespace aspcore_testRedis.Controllers
         public ActionResult Index()
         {
             //var returnz = await this.RenderViewAsync("About", false);
-            var result = new { FirstName = "Chen", LastName = "Angelo" };
+            var result = new object[] { new { FirstName = "Chen", LastName = "Angelo" }, new { FirstName = "Chen2", LastName = "Angelo2" } };
             Console.WriteLine("In Action Main");
             return Ok(result);
         }

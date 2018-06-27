@@ -81,20 +81,12 @@ namespace aspcore_testRedis.Controllers
             return View();
         }
 
-        [OutputCache]
-        public async Task<ActionResult> Chen()
+        [OutputCache(Duration=5)]
+        public ActionResult Chen()
         {
-            //var returnz = await this.RenderViewAsync("Index", false);
-            //var result = new { FirstName = "Chen", LastName = "Angelo" };
-            ViewData["Hello"] = "Hello View Data";
+            ViewData["Message"] = "This is a book";
             ViewBag.Hello = "Hello View Bag";
-            /*return new ContentResult
-            {
-                ContentType = "text/html",
-                StatusCode = (int)HttpStatusCode.OK,
-                Content = returnz
-            };*/
-            return View("Index");
+            return View("contact");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

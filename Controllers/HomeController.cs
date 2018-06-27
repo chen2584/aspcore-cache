@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using aspcore_testRedis.Models;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
+using System.Net;
 
 namespace aspcore_testRedis.Controllers
 {
@@ -24,21 +25,21 @@ namespace aspcore_testRedis.Controllers
         public JsonResult GetAllCustomers()
         {
             List<object> customers;
-            if(!cache.TryGetValue("CustomersList", out customers))
+            if (!cache.TryGetValue("CustomersList", out customers))
             {
                 Console.WriteLine("Customers Value: " + customers == null ? "Null" : "Mai null");
-                if(customers == null)
+                if (customers == null)
                 {
                     Console.WriteLine("Set Cache");
                     customers = AllCustomer();
                 }
                 var cacheEntryOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromSeconds(20));
-                
+
                 cache.Set("CustomersList", customers, cacheEntryOptions);
-                
+
             }
             Console.WriteLine(Request.Path.Value);
-            Console.WriteLine("End GetAllCustomers");
+            Console.WriteLine($"Controller: {RouteData.Values["controller"]} Action: {RouteData.Values["action"]} ");
             return Json(customers);
 
         }
@@ -51,6 +52,7 @@ namespace aspcore_testRedis.Controllers
             return customers;
         }
 
+        [OutputCache]
         public IActionResult Index()
         {
             return View();
@@ -77,6 +79,22 @@ namespace aspcore_testRedis.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        [OutputCache]
+        public async Task<ActionResult> Chen()
+        {
+            //var returnz = await this.RenderViewAsync("Index", false);
+            //var result = new { FirstName = "Chen", LastName = "Angelo" };
+            ViewData["Hello"] = "Hello View Data";
+            ViewBag.Hello = "Hello View Bag";
+            /*return new ContentResult
+            {
+                ContentType = "text/html",
+                StatusCode = (int)HttpStatusCode.OK,
+                Content = returnz
+            };*/
+            return View("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
